@@ -1,0 +1,54 @@
+ 
+#contact-area {
+    padding: 10%;
+    height: 100%;
+	background-color: rgba(0,0,0,1);
+    background-image:  url('../img/demo-1-bg.jpg');
+    overflow: hidden;
+	background-size: cover;
+	background-position: center center;
+}
+
+.contact-box {
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    box-shadow: 0 0 10px rgba(0, 0, 0,1);
+    padding: 50px 50px 35px;
+	color: #FFFFFF;
+    background-color: #000;
+    border-radius: 6px;
+}
+
+
+.contact-box input {
+    height: 50px;
+    border: 1px solid #f7f6f5;
+    font-size: 15px;
+    background-color: #f7f6f5;
+	opacity: 1;
+    font-weight: 500
+}
+
+.contact-box textarea {
+    border: 1px solid #f7f6f5;
+    padding-top: 10px;
+    background-color: #f7f6f5;
+    font-size: 15px;
+    font-weight: 500
+}
+
+.contact-box button {
+    background-color: #325eff;
+    border: 0;
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: 0;
+    font-weight: 500;
+    font-size: 15px
+}
+
+.contact-box button:hover {
+    background-color: #0f39cf;
+}
+ 

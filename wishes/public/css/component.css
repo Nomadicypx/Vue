@@ -66,6 +66,30 @@
 	position: absolute;
 	margin: 10px 13px;
 }
+.box_uer{
+	width: 25px;
+	height: 25px;
+	background-image: url(../img/login_ico.png);
+	background-position: -85px -0px;
+	position: absolute;
+	margin: 10px 13px;
+}
+.code_uer{
+	width: 25px;
+	height: 25px;
+	background-image: url(../img/login_ico.png);
+	background-position: -85px -155px;
+	position: absolute;
+	margin: 10px 13px;
+}
+.get_code_uer{
+	width: 80px;
+	height: 25px;
+	position: absolute;
+	margin: 10px 13px;
+	left:65%;
+	font:15px;
+}
 .l-login{
 	position: absolute;
 	z-index: 1;
