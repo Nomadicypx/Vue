@@ -29,15 +29,36 @@ export default{
                 data.height = window.innerHeight
                 console.log(data)
             })()
-        }
+        },
+        console.log("acceptedTaskDisplay"+this.$route.params.id)
+        //TODO:获取任务信息
+        this.taskId = this.$route.params.id;//拿到任务id可以用于显示任务信息
+        let url = this.$store.state.serverURL+'/task/'+this.taskId;
+        console.log("获取任务"+url)
+        // axios.get(url).then(
+        //     function(response){//拿到数据
+        //         this.taskBody.description;
+        //     }
+        // ).catch(function(){
+
+        // }).then(function(){
+
+        // })
     },
 
     methods:{
         toHome:function(event){
-            console.log('进入')
             this.$router.go(-1)
         },
+        takeTask:function(){
+            let url = this.$store.state.serverURL+'/task/'+this.taskId+':accept';
+            console.log("接取任务"+this.$data.taskId)
+            // axios.get(url).then(
+            //     function(res){
 
+            //     }
+            // )
+        }
     }
     ,
     components:{
@@ -66,7 +87,7 @@ export default{
                 <div class="cardContainer">
                    <el-card shadow="always" :body-style="{ padding: '20px' }">
                     <h2 style="text-align:center">Make Wishes</h2>
-                    <myfrom :params="taskContent" :ifaccepted="no"></myfrom>
+                    <myfrom :params="taskContent" :ifaccepted="yes"></myfrom>
                    </el-card>
                    
                     

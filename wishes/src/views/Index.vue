@@ -22,8 +22,9 @@ export default {
         // console.log("执行");
     },
     methods:{
-        submit: function(){        
-            this.verify()
+        submit: async function(){          
+            await this.verify()
+            console.log(this.$store.state.login)   
             if(this.$store.state.login==true){
                 console.log('登录成功')
                 this.$router.push('/main');
@@ -33,34 +34,50 @@ export default {
                 this.whatHWF()
             }
         },
-        verify:function(){
+        verify: async function(){
             let serverURL = this.$store.state.serverURL+'/oauth/token'
+            let that = this
             console.log(serverURL)
             //TODO:----------------------页面登录请求部分,返回请求登记登录状态!!!所有页面如果登录状态为未登录直接索引到登录界面上
-            // res = axios({
-            //     method:'post',
-            //     url:serverURL,
-            //     data:{
-            //         username:this.$data.account,
-            //         password:this.$data.passwd,
-            //         scope:'all',
-            //         grant_type:'password',
-            //         client_id:'app',
-            //         client_secret:'bkdwln231-23'
-            //     },
-            //     headers:{
-            //         'Content-Type':'application/json;charset=UTF-8',
-            //         'Authorization':'Basic YXBwOmJrZHdsbjIzMS0yMw=='
-            //     }
-            // }).then(function(res){
-            //     console.log(res)
-            //     return res
-            // })
-            this.$store.commit('setLogin',true);//保持登录状态
+            try{
+                let res = await axios({
+                    method:'post',
+                    url:serverURL,
+                    params:{
+                        username:this.$data.account,
+                        password:this.$data.passwd,
+                        scope:'all',
+                        grant_type:'password',
+                        client_id:'app',
+                        client_secret:'bkdwln231-23'
+                    },
+                    headers:{
+                        'Content-Type':'application/json;charset=UTF-8',
+                        'Authorization':'Basic YXBwOmJrZHdsbjIzMS0yMw=='
+                    }
+                });
+                if(res.data.data.access_token!=undefined){              
+                console.log(res)
+                that.$message("登录"+res.data.errmsg)
+                that.$store.state.token = res.data.data.access_token
+                that.$store.state.refreshedToken = res.data.data.refresh_token
+                that.$store.state.user.id = res.data.data.userId // self信息接口返回参数里头没有id，所以在这个地方设置
+                //console.log(that.$store.state.token)
+                that.$store.state.login = true;
+                //console.log('改变状态')
+            }
+            else{
+                this.$message(res.data.errmsg)
+            }
+            }catch(error){
+                console.log(error)
+            }
+            
         },
         whatHWF:function(){
 
         },
+
     },
     data(){
         return {
@@ -86,13 +103,13 @@ export default {
                         <div class="input_outer">
                             <span class="u_user">
                             </span>
-                            <input name="logname" v-model='account' class="text" style="color: #FFFFFF !important" type="text"
+                            <input name="logname" v-model='account' class="text" style="color: #FFFFFF !important" type="text" autocomplete="new-accounts"
                                    placeholder="请输入账户">
                         </div>
                         <div class="input_outer">
                             <span class="us_uer">
                             </span>
-                            <input name="logpass" v-model='passwd' class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"
+                            <input name="logpass" v-model='passwd' class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;" autocomplete="new-password"
                                     type="password" placeholder="请输入密码">
                         </div>
                         <div class="mb2">

@@ -35,58 +35,61 @@ export default{
         
     },
     methods:{
-        getCode: function(){
-            if(this.isMail()){
-                console.log('邮箱验证成功')
-                //发送邮箱验证码请求
-                let serverURL = this.$store.state.serverURL+'/users'
-                console.log(serverURL)
-                //TODO:----------------------页面获取验证码
-                // res = axios({
-                //     method:'post',
-                //     url:serverURL,
-                //     data:{
-                //         username:this.$data.account,
-                //         password:this.$data.passwd,
-                //         email:this.$data.mail,
-                //         mobile:'string'
-                //     },
-                // }).then(function(res){
-                //     console.log(res)
-                //     return res
-                // })           
-            }
-            else{//邮箱不是标准格式
+        //TODO:邮箱验证不写了
+        // getCode: function(){
+        //     if(this.isMail()){
+        //         console.log('邮箱验证成功')
+        //         //发送邮箱验证码请求
+        //         let serverURL = this.$store.state.serverURL+'/users'
+        //         console.log(serverURL)
+        //         //TODO:----------------------页面获取验证码
+        //         // res = axios({
+        //         //     method:'post',
+        //         //     url:serverURL,
+        //         //     data:{
+        //         //         username:this.$data.account,
+        //         //         password:this.$data.passwd,
+        //         //         email:this.$data.mail,
+        //         //         mobile:'string'
+        //         //     },
+        //         // }).then(function(res){
+        //         //     console.log(res)
+        //         //     return res
+        //         // })           
+        //     }
+        //     else{//邮箱不是标准格式
 
-            }
+        //     }
             
-        },
+        // },
         isMail: function(){//验证邮箱是否正确，正则表达式
-            return true;
+            var pattern = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+            return pattern.test(this.mail)
         },
         submit: function(){
             if(this.$data.passwd!=this.$data.confirm){
                 //密码没有确认的情况
-                console.log('请确认密码')
+                this.$message('请确认密码')
             }
             else if(!this.isMail()){
                 //邮箱格式不正确
+                this.$message('邮箱格式不正确')
             }
             else{
-                let serverURL = this.$store.state.serverURL+'/users/captcha'
+                let serverURL = this.$store.state.serverURL+'/password/'+this.$data.mail
                 console.log(serverURL)
-                //----------------页面进行注册
-                // res = axios({
-                //     method:'post',
-                //     url:serverURL,
-                //     data:{
-                //         email:this.$data.mail,
-                //         captcha:this.$data.vcode
-                //     },
-                // }).then(function(res){
-                //     console.log(res)
-                //     return res
-                // })                   
+                //----------------修改密码
+                res = axios({
+                    method:'post',
+                    url:serverURL,
+                    data:{
+                        email:this.$data.mail,
+                        captcha:this.$data.vcode
+                    },
+                }).then(function(res){
+                    console.log(res)
+                    return res
+                })                   
             }
         },
     },
@@ -107,35 +110,35 @@ export default{
                             <div class="input_outer">
                                 <span class="u_user">
                                 </span>
-                                <input v-model="account" name="logname" class="text" style="color: #FFFFFF !important" type="text"
+                                <input v-model="account" name="logname" class="text" style="color: #FFFFFF !important" type="text" autocomplete="new-accounts"
                                     placeholder="账户">
                             </div>
                             <div class="input_outer">
                                 <span class="us_uer">
                                 </span>
-                                <input v-model="passwd" name="logpass" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"
+                                <input v-model="passwd" name="logpass" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;" autocomplete="new-password"
                                      type="password" placeholder="新密码">
                             </div>
             
                             <div class="input_outer">
                                 <span class="us_uer">
                                 </span>
-                                <input v-model="confirm" name="logpass" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"
+                                <input v-model="confirm" name="logpass" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;" autocomplete="new-password"
                                      type="password" placeholder="确认密码">
                             </div>
                             <div class="input_outer" style="display:flex;padding-right=0px;">
                                 <span class="box_uer">
                                 </span>
-                                <input v-model="mail" name="logname" class="text" style="color: #FFFFFF !important" type="text"
+                                <input v-model="mail" name="logname" class="text" style="color: #FFFFFF !important" type="text" autocomplete="new-accounts"
                                     placeholder="邮箱">
                                 <a class="get_code_uer" @click="getCode" >获取验证码</a>
                             </div>
-                            <div class="input_outer" >
+                            <!-- <div class="input_outer" >
                                 <span class="code_uer">
                                 </span>
                                 <input v-model="vcode" name="logname" class="text" style="color: #FFFFFF !important" type="text"
                                     placeholder="邮箱验证码">
-                            </div>
+                            </div> -->
                             <section align="center" style="display:flex">
                                 <div style='width:50%;line-height:2.3' class="register-button" @click='submit' >提交</div>
                                 <div style='width:50%'><input type="reset" class="reset-button"></div>

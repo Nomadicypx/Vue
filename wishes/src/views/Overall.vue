@@ -1,7 +1,8 @@
 <script >
 
 
-
+import axios from 'axios'
+let dd = '私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊私聊'
 //TODO:页面两个跳转按钮的功能还没做
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
@@ -9,12 +10,19 @@ export default{
     data(){
        return{
          taskId: null,
+         taskBody:{
+            description:dd,
+            title:'帮忙喂乌龟',
+            type:'跑腿',
+            location:'映雪',
+            author:'发布人',
+            mobile:18807383177
+         },
          height: window.innerHeight,
-
        }
     },
     mounted(){
-        this.taskId = this.$route.params.id;//拿到任务id可以用于显示任务信息
+        
         const data = this
         window.onresize = function(){
             return (() => {
@@ -23,10 +31,21 @@ export default{
                 console.log(data)
             })()
         }
+        //TODO:获取任务信息
+        this.taskId = this.$route.params.id;//拿到任务id可以用于显示任务信息
+        let url = this.$store.state.serverURL+'/task/'+this.taskId;
+        console.log("获取任务"+url)
+        // axios.get(url).then(
+        //     function(response){//拿到数据
+        //         this.taskBody.description;
+        //     }
+        // ).catch(function(){
+
+        // }).then(function(){
+
+        // })
     },
-    computed:{
-    }
-    ,
+
     methods:{
         toHome:function(event){
             console.log('进入')
@@ -34,7 +53,13 @@ export default{
         },
         //TODO:接取任务接口
         takeTask:function(){
+            let url = this.$store.state.serverURL+'/task/'+this.taskId+':accept';
+            console.log("接取任务"+this.$data.taskId)
+            // axios.get(url).then(
+            //     function(res){
 
+            //     }
+            // )
         }
     }
     ,
@@ -57,7 +82,7 @@ export default{
 <template>
     <div>
         <section id="contact-area" :style="{height:height+'px'}" >
-            <div class="container">
+            <div >
             
                 <!--end section heading-->
                 <div class="row"  style="overflow:hidden">
@@ -66,21 +91,22 @@ export default{
                         <div class="contact-box text-center" style="overflow:hidden">
                         
                             
-                            <div align="left"><h3>帮我喂龟</h3></div>
+                            <div align="left"><h3>{{this.$data.taskBody.title}}</h3></div>
                             <br>	
-                            <div align="left" style="width: inherit;"><p>此处为详细信息，将数据库库中的详细信息显示出来，例如：我因为暑假要回家，为期一个月，宿舍中养的几只乌龟和鱼无人饲养，因此需要一位小伙伴帮忙喂养，具体如何信息请与我交流，以及宿舍信息;
-                                此处为详细信息，将数据库库中的详细信息显示出来，例如：我因为暑假要回家，为期一个月，宿舍中养的几只乌龟和鱼无人饲养，因此需要一位小伙伴帮忙喂养，具体如何信息请与我交流，以及宿舍信息
-                                此处为详细信息，将数据库库中的详细信息显示出来，例如：我因为暑假要回家，为期一个月，宿舍中养的几只乌龟和鱼无人饲养，因此需要一位小伙伴帮忙喂养，具体如何信息请与我交流，以及宿舍信息
-                                此处为详细信息，将数据库库中的详细信息显示出来，例如：我因为暑假要回家，为期一个月，宿舍中养的几只乌龟和鱼无人饲养，因此需要一位小伙伴帮忙喂养，具体如何信息请与我交流，以及宿舍信息</p>
+                            <div align="left" style="width: inherit;"><p>{{this.$data.taskBody.description}}</p>
                             </div>
-                            <div align="left"><font></font></div>                                
-                            <div align="center">
-                                <button >接取</button>
+                            <div align="left"><font></font></div>   
+                            <div style="margin-top: 20px;">
+                                <div align='right' style="font-size:10px">发布人: &nbsp;<sapn style="font-size:10px">{{this.taskBody.author}}</sapn></div>
+                                <div align='right' style="font-size:10px">地点: &nbsp;<sapn style="font-size:10px">{{this.taskBody.location}}</sapn></div>
+                                <div align='right' style="font-size:10px">联系方式: &nbsp;<sapn style="font-size:10px">{{this.taskBody.mobile}}</sapn></div>    
+                            </div>                             
+                            <div align="center" style="margin-top: 20px;">
+                                <button @click="takeTask">接取</button>
                                 &nbsp;&nbsp;&nbsp;
-                                <button @click.prevent="toHome"><font color="#fff">返回</font></button>
+                                <button @click="toHome"><font color="#fff">返回</font></button>
                             </div>
 
-                              
                         </div>
                         <!--end contact form-->
                     </div>

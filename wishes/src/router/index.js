@@ -6,18 +6,50 @@ import Ind from '../views/Index.vue'
 import Reg from '../views/Register.vue'
 import Forg from '../views/Forget.vue'
 import NotFound from '../views/NotFound.vue'
+import Test from '../components/Test.vue'
+import User from '../components/Userinfo.vue'
+import aOver from '../views/AcceptedOverall.vue'
+import Upload from '../views/Upload.vue'
 import {createRouter,createWebHashHistory} from 'vue-router'
+import Manage from '../views/Manage.vue'
+import Send from '../views/SendTaskManage.vue'
+import Rec from '../views/ReceiveTaskManage.vue'
+
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
-// 我们后面再讨论嵌套路由。
+
 const routes = [
   { path: '/overall/:id', component: Over },
+  {
+    path:'/manage',
+    component:Manage,
+    children:[
+        {
+            path:'/manage/userinfo',
+            component:User,
+        },
+        {
+            path:'/manage/sendtask',
+            component: Send,
+        },
+        {
+            path:'/manage/receivetask',
+            component: Rec,
+        }
+    ]
+  },
+  { path: '/upload', component: Upload },
+  { path: '/aoverall/:id', component: aOver },
   { path: '/overall', redirect:'/',component: Over },
+  { path: '/overall/:id',component: Over },
   { path: '/main', component: Main },
   { path: '/', component: Ind },
   { path: '/register', component: Reg },
   { path: '/forget', component: Forg },
+  { path: '/test', component: Test },
+  { path: '/user', component: User },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
+  
 ]
 
 // 3. 创建路由实例并传递 `routes` 配置
