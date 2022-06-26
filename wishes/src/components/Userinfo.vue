@@ -2,35 +2,35 @@
     <div class="alignContainer">
         <div class="cardContainer">
             <el-card shadow="always" :body-style="{ padding: '20px' } ">
-                <el-descriptions title="垂直带边框列表" direction="vertical" :column="4" border>
+                <el-descriptions title="用户个人" direction="vertical" :column="4" border>
                     <el-descriptions-item label="用户名">
                         <div class="hidden">
-                            <el-input  :disabled="!isEditable" v-model="input" placeholder="kooriookami" />
+                            <el-input  :disabled="!isEditable" v-model="username" :placeholder="pusername" />
                         </div>
                     </el-descriptions-item>
                     <el-descriptions-item label="手机号">
                         <div class="hidden">
-                            <el-input  :disabled="!isEditable" v-model="input" placeholder="kooriookami" />
+                            <el-input  :disabled="!isEditable" v-model="mobile" :placeholder="pmobile"/>
                         </div>                       
                     </el-descriptions-item>
-                    <el-descriptions-item label="邮箱" >
+                    <el-descriptions-item  label="邮箱" >
                         <div class="hidden">
-                            <el-input  disabled v-model="input" placeholder="kooriookami" />
+                            <el-input size="small" disabled v-model="email" :placeholder="pemail"/>
                         </div>
                     </el-descriptions-item>
                     <el-descriptions-item label="地点" >
                         <div class="hidden">
-                            <el-input  :disabled="!isEditable" v-model="input" placeholder="kooriookami" />
+                            <el-input  :disabled="!isEditable" v-model="location" placeholder="默认地点" />
                         </div>
                     </el-descriptions-item>
                     <el-descriptions-item label="愿意接取类型">
                         <el-checkbox v-model="checked1" :disabled="isEditable" @change="hookTest">跑腿</el-checkbox>
-                        <el-checkbox v-model="checked2" :disabled="isEditable">交易</el-checkbox>
-                        <el-checkbox v-model="checked2" :disabled="isEditable">帮助</el-checkbox>                       
+                        <el-checkbox v-model="checked2" :disabled="isEditable">解答</el-checkbox>
+                        <el-checkbox v-model="checked3" :disabled="isEditable">交易</el-checkbox>                       
                     </el-descriptions-item>
                     <el-descriptions-item label="个人说明">
                         <div class="hidden">
-                            <el-input  :disabled="!isEditable" v-model="input" placeholder="kooriookami" />
+                            <el-input  :disabled="!isEditable" v-model="desc" :placeholder="pdesc" />
                         </div>
                     </el-descriptions-item>
                 </el-descriptions>
@@ -50,8 +50,14 @@ export default {
         return{
             checked1: false,
             checked2: true,
+            checked3: true,
             isEditable: false,//为true的时候按钮禁用，但编辑事件正好相反
-            input:null,
+            username: null,pusername:null,
+            mobile:null,pmobile:null,
+            email:null,pemail:null,
+            desc:null,pdesc:null,
+            location:null,
+            
         }
     } ,
     methods:{
@@ -59,6 +65,10 @@ export default {
             this.isEditable = true;
             console.log("出发点击事件"+this.isEditable)
         },
+        check: function(value){
+            return value!=-1
+        }
+        ,
         triggerSubmit:function(event){
             //TODO:后台传送个人信息数据
 
@@ -74,6 +84,21 @@ export default {
             console.log(this.checked1)
         }
     },
+    mounted(){
+        if(this.$store.state.user.preferTaskType!=null){
+            let list = this.$store.state.user.preferTaskType.split(';')
+            console.log(list)
+            this.checked1 = this.check(list[0])
+            this.checked2 = this.check(list[1])
+            this.checked3 = this.check(list[2])
+        }
+        this.pusername = this.$store.state.user.username,
+        this.pmobile = this.$store.state.user.mobile,
+        this.pemail = this.$store.state.user.email,
+        this.pdesc = this.$store.state.user.sign,
+        console.log(this.$store.state)
+    }
+    //TODO:在进入主页的时候已经拿到个人的数据了,可以不用再重新发送
 
     
 }

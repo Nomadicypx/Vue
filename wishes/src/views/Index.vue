@@ -59,8 +59,8 @@ export default {
                 if(res.data.data.access_token!=undefined){              
                 console.log(res)
                 that.$message("登录"+res.data.errmsg)
-                that.$store.state.token = res.data.data.access_token
-                that.$store.state.refreshedToken = res.data.data.refresh_token
+                that.$store.state.token = "Bearer "+res.data.data.access_token
+                that.$store.state.refreshedToken = "Bearer "+res.data.data.refresh_token
                 that.$store.state.user.id = res.data.data.userId // self信息接口返回参数里头没有id，所以在这个地方设置
                 //console.log(that.$store.state.token)
                 that.$store.state.login = true;

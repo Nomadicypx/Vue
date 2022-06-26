@@ -6,9 +6,10 @@ const store = createStore({
             token: '111',
             refreshedToken : '222',
             login:false,
-            user:{
+            user:{//参考/self api返回的数据字段
                 id:11,
-                types:[],
+                preferTaskType:"",
+                basics:null
             }
         }
     },

@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts" >
-
+import axios from 'axios'
 export default {
         data() {
             return {
@@ -116,6 +116,30 @@ export default {
               search: '',
             }
         },
+        async mounted(){
+          
+          let serverURL = this.$store.state.serverURL+'/task/user/accepted';
+          
+            try{
+            let res = await axios({
+            method:'get',
+            url:serverURL,
+            headers:{
+                'Content-Type':'application/json;charset=UTF-8',
+                'Authorization':this.$store.state.token
+            },
+            });
+            
+            console.log(res.data.data)
+            this.receiveTask = this.responseHandler(res.data.data)
+            console.log(this.receiveTask)
+          
+          }catch(error){
+              console.log("任务请求发送失败")
+              console.log(error)
+          }
+          
+        },
         computed: 
         {
                 receiveTask() {
@@ -125,6 +149,19 @@ export default {
                 }
         },
         methods: {
+            responseHandler: function(input){
+              let res = []
+              for(var i=0;i<input.length;i++){
+                let item: any = new Object();
+                item.task_id = input[i].id;
+                item.task_name = input[i].title;
+                item.description = input[i].description;
+                item.price = input[i].price;
+                item.location = input[i].location;
+                res.push(item)
+              }
+              return res
+            },
             handleFinish(index, row) {
                this.$confirm('完成任务操作, 是否继续?', '提示', {
                     confirmButtonText: '确定',

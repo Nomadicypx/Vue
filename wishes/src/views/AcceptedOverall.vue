@@ -32,9 +32,10 @@ export default{
         },
         console.log("acceptedTaskDisplay"+this.$route.params.id)
         //TODO:获取任务信息
-        this.taskId = this.$route.params.id;//拿到任务id可以用于显示任务信息
+        this.taskId = this.$route.params.id;//拿到任务id可以用于显示任务信息,拿到信息后填充taskContent用于编辑的默认值
         let url = this.$store.state.serverURL+'/task/'+this.taskId;
-        console.log("获取任务"+url)
+        console.log("查看任务"+url)
+        this.queryTask()//查询任务
         // axios.get(url).then(
         //     function(response){//拿到数据
         //         this.taskBody.description;
@@ -50,14 +51,8 @@ export default{
         toHome:function(event){
             this.$router.go(-1)
         },
-        takeTask:function(){
-            let url = this.$store.state.serverURL+'/task/'+this.taskId+':accept';
-            console.log("接取任务"+this.$data.taskId)
-            // axios.get(url).then(
-            //     function(res){
+        queryTask:function(){
 
-            //     }
-            // )
         }
     }
     ,

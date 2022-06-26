@@ -26,18 +26,24 @@ export default{
         const data = this
         window.onresize = function(){
             return (() => {
-                console.log("windows"+window.innerHeight)
+                //console.log("windows"+window.innerHeight)
                 data.height = window.innerHeight
-                console.log(data)
+                //console.log(data)
             })()
         }
         //TODO:获取任务信息
         this.taskId = this.$route.params.id;//拿到任务id可以用于显示任务信息
-        let url = this.$store.state.serverURL+'/task/'+this.taskId;
-        console.log("获取任务"+url)
+        this.taskBody.description = this.$route.params.description;
+        this.taskBody.title = this.$route.params.title;
+        this.taskBody.location = this.$route.params.location;
+        this.taskBody.mobile = this.$route.params.email;//邮箱每个人都有
+        this.taskBody.author = this.$route.params.user;
+        // let url = this.$store.state.serverURL+'/task/'+this.taskId;
+        // console.log("获取任务"+url)
         // axios.get(url).then(
         //     function(response){//拿到数据
-        //         this.taskBody.description;
+        //         console.log(response.data)
+        //         this.taskBody.description = response.data.description;
         //     }
         // ).catch(function(){
 
@@ -53,13 +59,27 @@ export default{
         },
         //TODO:接取任务接口
         takeTask:function(){
-            let url = this.$store.state.serverURL+'/task/'+this.taskId+':accept';
+            
+            const that = this;
             console.log("接取任务"+this.$data.taskId)
-            // axios.get(url).then(
-            //     function(res){
-
-            //     }
-            // )
+            console.log("接取任务"+this.$store.state.token)
+            axios({
+                method:'post',
+                url:this.$store.state.serverURL+'/task/'+this.taskId+':accept',
+                headers:{
+                    'Content-Type':'application/json;charset=UTF-8',
+                    'Authorization':this.$store.state.token
+                }
+            }).then(
+                function(res){
+                    that.$message("接取任务成功")
+                }
+            ).catch(
+                function(error){
+                    console.log("任务接取失败")
+                    console.log(error)
+                }
+            )
         }
     }
     ,

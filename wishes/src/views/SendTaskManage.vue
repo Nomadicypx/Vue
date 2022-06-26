@@ -136,10 +136,13 @@
 </template>
 
 <script>
-
+import {useStore} from 'vuex'
+import axios from 'axios'
 export default {
         data() {
             return {
+              rowdataloaded:false
+              ,
               Task: {
                     task_id:'',
                     task_name: '',
@@ -193,6 +196,31 @@ export default {
 
             }
         },
+        async mounted(){
+          
+          let serverURL = this.$store.state.serverURL+'/task/user/published';
+          if(!this.rowdataloaded){
+              try{
+              let res = await axios({
+              method:'get',
+              url:serverURL,
+              headers:{
+                  'Content-Type':'application/json;charset=UTF-8',
+                  'Authorization':this.$store.state.token
+              },
+              });
+              
+              this.taskInfoLoaded = true;
+              console.log(res.data.data)
+              this.sendTask = this.responseHandler(res.data.data)
+              console.log(this.sendTask)
+            }catch(error){
+                console.log("任务请求发送失败")
+                console.log(error)
+            }
+          }
+        }
+        ,
         computed: 
         {
                 sendTask() {
@@ -202,6 +230,20 @@ export default {
                 }
         },
         methods: {
+            responseHandler: function(input){
+              let res = []
+              for(var i=0;i<input.length;i++){
+                let item = new Object();
+                item.task_id = input[i].id;
+                item.task_name = input[i].title;
+                item.description = input[i].description;
+                item.price = input[i].price;
+                item.location = input[i].location;
+                res.push(item)
+              }
+              return res
+            }
+            ,
             toUpload: function(){
               this.$router.push('/upload');
             },
@@ -259,92 +301,6 @@ export default {
 
             },
 
-            //增加任务
-            addTask(){
-              console.log('增加新任务')
-              this.$message({
-                        type: 'info',
-                        message: '发布新任务成功'
-                    });
-              /////////////////////////////////////////////////////////////////////////////需要修改的网络请求部分
-
-
-              // let postData = this.qs.stringify({
-                //     task_id：this.Task.task_id
-              //       task_name: this.Task.task_name,
-              //       description: this.Task.description,
-              //       location: this.Task.location,
-              //       price: this.Task.price
-              //   });
-              //   this.axios({
-              //       method: 'post',
-              //       url:'/update',
-              //       data:postData
-              //   }).then(response =>
-              //   {
-              //    ////////////////////////////////////////////////这里还需要再查询一下已发送的任务 
-                   //         this.sendTask = response.data;//////////////这个是必须的！！！！！！！！！要记得！！！！！
-              //       this.cancel();
-              //       this.$message({
-              //           type: 'success',
-              //           message: '更新成功!'
-              //       });
-              //       console.log(response);
-              //   }).catch(error =>
-              //   {
-              //       this.$message({
-              //           type: 'success',
-              //           message: '更新失败!'
-              //       });
-              //       console.log(error);
-              //   });
-
-
-
-
-
-
-            },
-            editTask(){
-              console.log('修改发出的任务')
-              this.$message({
-                        type: 'info',
-                        message: '修改成功'
-                    });
-              /////////////////////////////////////////////////////////////////////////////需要修改的网络请求部分
-
-
-              // let postData = this.qs.stringify({
-                //     task_id:this.Task.task_id,
-              //       task_name: this.Task.task_name,
-              //       description: this.Task.description,
-              //       location: this.Task.location,
-              //       price: this.Task.price
-              //   });
-              //   this.axios({
-              //       method: 'post',
-              //       url:'/update',
-              //       data:postData
-              //   }).then(response =>
-              //   {
-              //    ////////////////////////////////////////////////这里还需要再查询一下已发送的任务     
-                //         this.sendTask = response.data;//////////////这个是必须的！！！！！！！！！要记得！！！！！ 
-              //       this.cancel();
-              //       this.$message({
-              //           type: 'success',
-              //           message: '更新成功!'
-              //       });
-              //       console.log(response);
-              //   }).catch(error =>
-              //   {
-              //       this.$message({
-              //           type: 'success',
-              //           message: '更新失败!'
-              //       });
-              //       console.log(error);
-              //   });
-
-            },
             cancel() {
                 this.dialogUpdate = false;
                 this.dialogVisible=false;
