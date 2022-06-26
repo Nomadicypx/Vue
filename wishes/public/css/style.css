@@ -73,7 +73,7 @@ overflow: hidden;
 }
 #title span {
   background: -webkit-linear-gradient(white, #38495a);
-  -webkit-background-clip: text;
+  
   -webkit-text-fill-color: transparent;
 }
 
@@ -82,6 +82,113 @@ overflow: hidden;
     transform: translateY(0px);
   }
   to {
-    transform: translateY(-2000px);
+    transform: translateY(-1500px);
   }
 }
+
+	.taskdiv0{
+		position:relative;
+		left:10%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv1{
+		position:relative;
+		left:20%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv2{
+		position:relative;
+		left:30%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv3{
+		position:relative;
+		left:40%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv4{
+		position:relative;
+		left:50%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv5{
+		position:relative;
+		left:60%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv6{
+		position:relative;
+		left:70%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv7{
+		position:relative;
+		left:80%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv8{
+		position:relative;
+		left:90%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+	.taskdiv9{
+		position:relative;
+		left:95%;
+		top:80%;
+		bottom:10%;
+        width:25px;
+        height:25px;
+        margin:35px;
+        animation: animStar 20s linear infinite;
+	}
+
+
+	.taskdiv:hover{
+	    animation-play-state: paused;
+	}
+

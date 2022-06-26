@@ -4,9 +4,13 @@
 import {useStore} from 'vuex'
 import {useRouter} from 'vue-router'
 import axios from 'axios'
+
     export default{
         data(){
             return{
+                height: window.innerHeight,
+                visible:false,
+                rendabel:false,
                 tasks:[
                     {
                         id:1,
@@ -21,21 +25,31 @@ import axios from 'axios'
 
             }
         },
-        mounted(){
+        mount(){
             this.drawItem()//给账号设置canvas元素
+            window.onresize = function(){
+                return (() => {
+                    console.log("windows"+window.innerHeight)
+                    data.height = window.innerHeight
+                    console.log(data)
+                })()
+            }
+        },
+        async beforeMount(){
             if(!this.infoLoaded){
-                this.getUserInfo()//网络请求拿到个人信息知道偏好类型
+                await this.getUserInfo()//网络请求拿到个人信息知道偏好类型
             }
             //TODO:重置user的信息这里需要同步一下
             if(!this.taskInfoLoaded){
-                this.getTaskList()
+                await this.getTaskList()
             }           
-            console.log(this.$store.state.token)
+            console.log("函数拿到所有数据")
             if(this.infoLoaded&&this.taskInfoLoaded){
-                this.renderTask()
+                this.rendabel = true;
+                console.log(this.rendabel+"值发生改变")
             }
             else{//页面信息还需要加载
-
+                this.rendabel = false;
             }
         },
         beforeRouteEnter(to,from,next){           
@@ -55,17 +69,13 @@ import axios from 'axios'
 
 
         methods:{
+            generateClassName: function(index){
+                var i = Math.floor(Math.random()*10);
+                console.log(index);
+                return `taskdiv${i}`;
+            },           
             drawItem: function(){
-                var c=document.getElementById("userCanvas");
-                var ctx=c.getContext("2d");
-                ctx.fillStyle="#ffffff";
-                ctx.beginPath();
-                ctx.arc(30,30,30,0*Math.PI,2*Math.PI);
-                ctx.closePath();
-                ctx.fill();
-                ctx.font = "20px WenQuanYi Micro Hei";
-                ctx.fillStyle="#000000";
-                ctx.fillText("帐号", 10,40);
+
             },//TODO:任务请求
             getTaskList: async function(){//根据用户id获取用户表的所有字段
                 //如果用户表的能解决任务的类型个数不为0，根据任务类型发送请求
@@ -155,38 +165,79 @@ import axios from 'axios'
             toManage: function(){
                 this.$router.push('/manage');
             },
-            renderTask: function(){//TODO:拿到任务数据时调用的渲染函数
 
-            }
         }
     }
 </script>
 
 
 <template>
-    <div>
+    <div v-if="!this.rendabel">
         <div>
             <ul>
                 <li v-for="(task, index) in tasks" :key="task.id" @click="toOverall(index)">
                      - {{ index }} - {{ task.id }}
                 </li>
             </ul>
-            <div id="stars"></div>
-            <div id="stars2"></div>
-            <div id="stars3"></div>
             <div class="dialog" name = "user" id="userdiv" style="position:absolute;right:10px; top: 20px; width: 60px; height: 60px" >
                 <canvas  id="userCanvas" width="60" height="60" style="border:0px solid #c3c3c3;" @click='toManage'>
                 </canvas>
             </div>    
         </div>
     </div>
+
+    <div v-if = "this.rendabel" >
+
+
+
+        <section id="contact-area" :style="{height:height+'px'}" >
+            <div class="alignContainer">
+                <div  style="position:absolute; left:0%; top:0%; width:100%; height:100% ;background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);">
+                    <div id="stars"></div>
+                    <div id="stars2"></div>
+                    <div id="stars3"></div>
+                    <div class="taskdiv" v-for="(item, index) in tasks" :class="generateClassName(index)" :key="item" @click="toOverall(index)" >
+                        <el-tooltip effect="light" placement="top"  :content=item.description>
+                        
+
+                            <div v-if="item.type=='交易'">
+                                <el-button type="info" size="small" style="box-shadow:0px 0px 20px 10px white;" circle plain>
+                                    <i class="el-icon-star-on"></i>
+                                </el-button>
+                            </div>
+                            <div v-if="item.type!='交易'">
+                                <el-button type="info" size="small" style="background:transparent; box-shadow:0px 0px 5px 5px grey inset;" circle plain>
+                                    <i class="el-icon-star-on"></i>
+                                </el-button>
+                            </div>
+                        </el-tooltip>
+                    </div>
+                </div>
+                <div  style="position:absolute;right:100px; top: 100px; width: 60px; height: 60px" >
+                    <el-button type="danger" round size="large" @click="toManage">个人账号</el-button>
+                </div>
+            </div>
+        </section>   
+    </div>
+
 </template>
 
-<style>
+<style  scoped>
+@import url('../../public/css/style.css');
 .dialog{
     opacity: 0.5;
 }
 .dialog:hover{
     opacity: 1.0;
+}
+.cardContainer{
+    text-align: center;
+    width: 600px;
+    margin-top: 50px;
+    text-align: left;
+}
+.alignContainer{
+    display: flex;
+    justify-content: center;
 }
 </style>
